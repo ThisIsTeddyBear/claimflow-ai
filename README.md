@@ -34,27 +34,27 @@ Pure LLM adjudication is unsafe for claims operations. ClaimFlow AI applies this
 ```text
 .
 +- apps/
-�  +- api/
-�  �  +- app/
-�  �  �  +- api/routes
-�  �  �  +- models
-�  �  �  +- repositories
-�  �  �  +- schemas
-�  �  �  +- services
-�  �  �  +- workflows
-�  �  �  +- rules
-�  �  �  +- prompts
-�  �  �  +- seed
-�  �  �  +- tests
-�  �  +- requirements.txt
-�  +- web/
-�     +- app
-�     +- components
-�     +- lib
-�     +- types
+¦  +- api/
+¦  ¦  +- app/
+¦  ¦  ¦  +- api/routes
+¦  ¦  ¦  +- models
+¦  ¦  ¦  +- repositories
+¦  ¦  ¦  +- schemas
+¦  ¦  ¦  +- services
+¦  ¦  ¦  +- workflows
+¦  ¦  ¦  +- rules
+¦  ¦  ¦  +- prompts
+¦  ¦  ¦  +- seed
+¦  ¦  ¦  +- tests
+¦  ¦  +- requirements.txt
+¦  +- web/
+¦     +- app
+¦     +- components
+¦     +- lib
+¦     +- types
 +- data/
-�  +- sample_claims/
-�  +- synthetic_reference/
+¦  +- sample_claims/
+¦  +- synthetic_reference/
 +- docs/
 +- evals/
 +- scripts/
