@@ -34,27 +34,27 @@ Pure LLM adjudication is unsafe for claims operations. ClaimFlow AI applies this
 ```text
 .
 +- apps/
-¦  +- api/
-¦  ¦  +- app/
-¦  ¦  ¦  +- api/routes
-¦  ¦  ¦  +- models
-¦  ¦  ¦  +- repositories
-¦  ¦  ¦  +- schemas
-¦  ¦  ¦  +- services
-¦  ¦  ¦  +- workflows
-¦  ¦  ¦  +- rules
-¦  ¦  ¦  +- prompts
-¦  ¦  ¦  +- seed
-¦  ¦  ¦  +- tests
-¦  ¦  +- requirements.txt
-¦  +- web/
-¦     +- app
-¦     +- components
-¦     +- lib
-¦     +- types
+ï¿½  +- api/
+ï¿½  ï¿½  +- app/
+ï¿½  ï¿½  ï¿½  +- api/routes
+ï¿½  ï¿½  ï¿½  +- models
+ï¿½  ï¿½  ï¿½  +- repositories
+ï¿½  ï¿½  ï¿½  +- schemas
+ï¿½  ï¿½  ï¿½  +- services
+ï¿½  ï¿½  ï¿½  +- workflows
+ï¿½  ï¿½  ï¿½  +- rules
+ï¿½  ï¿½  ï¿½  +- prompts
+ï¿½  ï¿½  ï¿½  +- seed
+ï¿½  ï¿½  ï¿½  +- tests
+ï¿½  ï¿½  +- requirements.txt
+ï¿½  +- web/
+ï¿½     +- app
+ï¿½     +- components
+ï¿½     +- lib
+ï¿½     +- types
 +- data/
-¦  +- sample_claims/
-¦  +- synthetic_reference/
+ï¿½  +- sample_claims/
+ï¿½  +- synthetic_reference/
 +- docs/
 +- evals/
 +- scripts/
@@ -151,7 +151,7 @@ python scripts/seed_demo_data.py
 5. Use reviewer actions to override an automated decision
 6. Open `/evals` and run evaluation harness
 
-Detailed narrative: [`docs/demo-script.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/demo-script.md)
+Detailed narrative: [`docs/demo-script.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/demo-script.md)
 
 ## API Endpoints
 ### Claims
@@ -192,7 +192,7 @@ Versioned prompt contracts are stored in:
 - `apps/api/app/prompts/healthcare_plausibility_advisory_agent/v1.json`
 - `apps/api/app/prompts/explanation_agent/v1.json`
 
-See: [`docs/prompt-contracts.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/prompt-contracts.md)
+See: [`docs/prompt-contracts.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/prompt-contracts.md)
 
 ## Seeded Scenario Coverage
 - Auto: straightforward approve, inactive policy reject, missing docs pend, narrative mismatch escalate, photo reuse/high value escalate, excluded driver reject, low-impact high-injury escalate
@@ -230,12 +230,12 @@ Coverage includes:
 - synthetic data only
 
 ## Docs
-- [`docs/architecture.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/architecture.md)
-- [`docs/workflow-spec.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/workflow-spec.md)
-- [`docs/prompt-contracts.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/prompt-contracts.md)
-- [`docs/demo-script.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/demo-script.md)
-- [`docs/implementation-plan.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/implementation-plan.md)
-- [`docs/progress.md`](/c:/Users/AKUL/Documents/GitHub/claimflow-ai/docs/progress.md)
+- [`docs/architecture.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/architecture.md)
+- [`docs/workflow-spec.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/workflow-spec.md)
+- [`docs/prompt-contracts.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/prompt-contracts.md)
+- [`docs/demo-script.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/demo-script.md)
+- [`docs/implementation-plan.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/implementation-plan.md)
+- [`docs/progress.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/progress.md)
 
 ## Limitations
 - Uses deterministic extraction heuristics by default (LLM integration optional via env config)
