@@ -1,0 +1,46 @@
+rules:
+  - rule_id: healthcare_member_inactive_reject
+    domain: healthcare
+    priority: 100
+    condition:
+      all:
+        - fact: member_active_on_dos
+          equals: false
+    action:
+      decision: reject
+      reason: "Member inactive on date of service"
+
+  - rule_id: healthcare_missing_docs_pend
+    domain: healthcare
+    priority: 90
+    condition:
+      all:
+        - fact: intake.missing_docs_count
+          gt: 0
+    action:
+      decision: pend
+      reason: "Missing required healthcare claim documentation"
+
+  - rule_id: healthcare_duplicate_escalate
+    domain: healthcare
+    priority: 80
+    condition:
+      all:
+        - fact: is_duplicate
+          equals: true
+    action:
+      decision: escalate
+      reason: "Potential duplicate billing detected"
+      reviewer_queue: fraud_review
+
+  - rule_id: healthcare_high_risk_escalate
+    domain: healthcare
+    priority: 70
+    condition:
+      all:
+        - fact: anomaly.risk_score
+          gte: 0.8
+    action:
+      decision: escalate
+      reason: "Anomaly risk threshold exceeded"
+      reviewer_queue: medical_review

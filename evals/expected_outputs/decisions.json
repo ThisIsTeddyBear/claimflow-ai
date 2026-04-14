@@ -1,0 +1,16 @@
+{
+  "auto_01_straightforward_approve": "approve",
+  "auto_02_policy_inactive_reject": "reject",
+  "auto_03_missing_docs_pend": "pend",
+  "auto_04_narrative_mismatch_escalate": "escalate",
+  "auto_05_photo_reuse_escalate": "escalate",
+  "auto_06_excluded_driver_reject": "reject",
+  "auto_07_low_impact_high_injury_escalate": "escalate",
+  "health_01_routine_approve": "approve",
+  "health_02_member_inactive_reject": "reject",
+  "health_03_missing_prior_auth_pend": "pend",
+  "health_04_duplicate_billing_escalate": "escalate",
+  "health_05_medical_plausibility_escalate": "escalate",
+  "health_06_excluded_cosmetic_reject": "reject",
+  "health_07_corrected_claim_approve": "approve"
+}

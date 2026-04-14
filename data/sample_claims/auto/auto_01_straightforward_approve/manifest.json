@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_01_straightforward_approve",
+  "domain": "auto",
+  "expected_decision": "approve",
+  "incident_or_service_date": "2025-03-14",
+  "policy_or_member_id": "AUTO-1001",
+  "claimant_name": "Ava Carter",
+  "estimated_amount": 4500,
+  "rationale": "Synthetic scenario for approve path coverage."
+}

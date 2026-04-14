@@ -1,0 +1,6 @@
+[
+  {"provider_id": "PRV-301", "provider_name": "Northpoint Family Clinic", "network_status": "in_network"},
+  {"provider_id": "PRV-302", "provider_name": "Metro Surgical Center", "network_status": "in_network"},
+  {"provider_id": "PRV-303", "provider_name": "Open Horizon Specialty", "network_status": "out_of_network"},
+  {"provider_id": "PRV-304", "provider_name": "Sunrise Diagnostic", "network_status": "in_network"}
+]

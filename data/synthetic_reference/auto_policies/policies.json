@@ -1,0 +1,77 @@
+[
+  {
+    "policy_number": "AUTO-1001",
+    "insured_name": "Ava Carter",
+    "active_from": "2025-01-01",
+    "active_to": "2026-12-31",
+    "vehicles": [
+      {"vin": "1HGCM82633A100001", "plate": "CA-7KRP21"}
+    ],
+    "drivers": ["Ava Carter", "Noah Carter"],
+    "excluded_drivers": [],
+    "coverages": {"collision": true, "comprehensive": true, "bodily_injury": true},
+    "deductible": 500,
+    "exclusions": ["commercial", "rideshare"],
+    "territory": "US"
+  },
+  {
+    "policy_number": "AUTO-1002",
+    "insured_name": "Liam Torres",
+    "active_from": "2023-01-01",
+    "active_to": "2024-06-30",
+    "vehicles": [
+      {"vin": "2HGCM82633A100002", "plate": "NV-44DLP"}
+    ],
+    "drivers": ["Liam Torres"],
+    "excluded_drivers": [],
+    "coverages": {"collision": true, "comprehensive": true, "bodily_injury": true},
+    "deductible": 750,
+    "exclusions": ["commercial", "rideshare"],
+    "territory": "US"
+  },
+  {
+    "policy_number": "AUTO-1003",
+    "insured_name": "Mia Patel",
+    "active_from": "2025-01-01",
+    "active_to": "2026-12-31",
+    "vehicles": [
+      {"vin": "3HGCM82633A100003", "plate": "TX-33KLM"}
+    ],
+    "drivers": ["Mia Patel", "Ravi Patel"],
+    "excluded_drivers": ["Evan Excluded"],
+    "coverages": {"collision": true, "comprehensive": true, "bodily_injury": true},
+    "deductible": 1000,
+    "exclusions": ["commercial", "rideshare"],
+    "territory": "US"
+  },
+  {
+    "policy_number": "AUTO-1004",
+    "insured_name": "Zoe Brooks",
+    "active_from": "2025-01-01",
+    "active_to": "2026-12-31",
+    "vehicles": [
+      {"vin": "4HGCM82633A100004", "plate": "WA-9ZZ99"}
+    ],
+    "drivers": ["Zoe Brooks"],
+    "excluded_drivers": [],
+    "coverages": {"collision": true, "comprehensive": true, "bodily_injury": true},
+    "deductible": 500,
+    "exclusions": ["commercial", "rideshare"],
+    "territory": "US"
+  },
+  {
+    "policy_number": "AUTO-1005",
+    "insured_name": "Omar Singh",
+    "active_from": "2025-02-15",
+    "active_to": "2026-02-15",
+    "vehicles": [
+      {"vin": "5HGCM82633A100005", "plate": "FL-77RTQ"}
+    ],
+    "drivers": ["Omar Singh"],
+    "excluded_drivers": [],
+    "coverages": {"collision": true, "comprehensive": true, "bodily_injury": true},
+    "deductible": 1200,
+    "exclusions": ["commercial", "rideshare"],
+    "territory": "US"
+  }
+]

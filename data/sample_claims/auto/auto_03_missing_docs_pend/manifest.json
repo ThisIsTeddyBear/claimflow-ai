@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_03_missing_docs_pend",
+  "domain": "auto",
+  "expected_decision": "pend",
+  "incident_or_service_date": "2025-05-22",
+  "policy_or_member_id": "AUTO-1001",
+  "claimant_name": "Noah Carter",
+  "estimated_amount": 2400,
+  "rationale": "Synthetic scenario for pend path coverage."
+}

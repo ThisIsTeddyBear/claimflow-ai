@@ -1,0 +1,1 @@
+# shared package placeholder for future schema/versioned contract sharing

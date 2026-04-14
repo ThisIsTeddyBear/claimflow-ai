@@ -1,0 +1,204 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
+import { DecisionCard } from "@/components/decision-card";
+import { JsonView } from "@/components/json-view";
+import { Panel } from "@/components/panel";
+import { ReviewerActions } from "@/components/reviewer-actions";
+import { RiskBadge, StatusBadge } from "@/components/badges";
+import { WorkflowTimeline } from "@/components/workflow-timeline";
+import { getClaimDetail, rerunWorkflowStep, runWorkflow } from "@/lib/api";
+import { ClaimDetail } from "@/types/claims";
+
+export default function ClaimDetailPage() {
+  const params = useParams<{ id: string }>();
+  const claimId = params.id ?? "";
+  const [detail, setDetail] = useState<ClaimDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [running, setRunning] = useState(false);
+
+  const load = useCallback(async () => {
+    if (!claimId) {
+      setLoading(false);
+      setError("Invalid claim id.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getClaimDetail(claimId);
+      setDetail(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load claim");
+    } finally {
+      setLoading(false);
+    }
+  }, [claimId]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const handleRunWorkflow = async () => {
+    setRunning(true);
+    try {
+      await runWorkflow(claimId);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to run workflow");
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  const handleRerun = async (stepName: string) => {
+    setRunning(true);
+    try {
+      await rerunWorkflowStep(claimId, stepName);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to rerun workflow step");
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  if (loading) {
+    return <p className="text-sm text-muted">Loading claim...</p>;
+  }
+
+  if (error) {
+    return <p className="text-sm text-rose-700">{error}</p>;
+  }
+
+  if (!detail) {
+    return <p className="text-sm text-muted">Claim not found.</p>;
+  }
+
+  return (
+    <div className="space-y-6">
+      <Panel title="Claim Header" subtitle="Intake snapshot and current workflow state.">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-2xl font-semibold">{detail.claim.claim_number}</h2>
+          <StatusBadge value={detail.claim.status} />
+          <StatusBadge value={detail.decision?.decision ?? "no_decision"} />
+          <RiskBadge score={detail.fraud_result?.risk_score} />
+        </div>
+        <div className="mt-4 grid gap-2 text-sm text-muted md:grid-cols-3">
+          <p>Domain: {detail.claim.domain}</p>
+          <p>Subtype: {detail.claim.subtype ?? "-"}</p>
+          <p>Member/Policy: {detail.claim.policy_or_member_id ?? "-"}</p>
+          <p>Claimant: {detail.claim.claimant_name ?? "-"}</p>
+          <p>Date: {detail.claim.incident_or_service_date ?? "-"}</p>
+          <p>Amount: {detail.claim.estimated_amount != null ? `$${detail.claim.estimated_amount}` : "-"}</p>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white disabled:opacity-50" disabled={running} onClick={() => void handleRunWorkflow()}>
+            {running ? "Running..." : "Run Workflow"}
+          </button>
+          <button className="rounded-lg bg-ink px-3 py-2 text-sm font-medium text-white disabled:opacity-50" disabled={running} onClick={() => void handleRerun("extraction")}>
+            Rerun From Extraction
+          </button>
+          <button className="rounded-lg border border-slate-300 px-3 py-2 text-sm" disabled={running} onClick={() => void load()}>
+            Refresh
+          </button>
+        </div>
+      </Panel>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        <div className="space-y-6 xl:col-span-2">
+          <Panel title="Documents" subtitle="Uploaded packet documents and parsed text preview.">
+            <div className="space-y-3">
+              {detail.documents.map((doc) => (
+                <div key={doc.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-medium">{doc.filename}</p>
+                    <StatusBadge value={doc.document_type ?? "unknown"} />
+                    {doc.extraction_confidence != null ? <span className="text-xs text-muted">extraction {doc.extraction_confidence.toFixed(2)}</span> : null}
+                  </div>
+                  <p className="mt-2 line-clamp-3 text-xs text-muted">{doc.ocr_text ?? "No parsed text"}</p>
+                </div>
+              ))}
+              {detail.documents.length === 0 ? <p className="text-sm text-muted">No documents uploaded.</p> : null}
+            </div>
+          </Panel>
+
+          <Panel title="Extracted Facts" subtitle="Structured entity output from extraction agent.">
+            <JsonView value={detail.extracted_facts} />
+          </Panel>
+
+          <Panel title="Validation Issues" subtitle="Contradictions and deterministic validation findings.">
+            {detail.validation_issues.length === 0 ? (
+              <p className="text-sm text-muted">No validation issues found.</p>
+            ) : (
+              <ul className="space-y-2 text-sm">
+                {detail.validation_issues.map((issue) => (
+                  <li key={issue.id} className="rounded-xl border border-slate-200 p-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <StatusBadge value={issue.severity} />
+                      <span className="text-xs uppercase text-muted">{issue.category}</span>
+                    </div>
+                    <p className="mt-1 text-ink">{issue.description}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Panel>
+
+          <Panel title="Coverage, Anomaly, Advisory" subtitle="Deterministic coverage checks and advisory findings.">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <p className="mb-2 text-sm font-semibold">Coverage Result</p>
+                <JsonView value={detail.coverage_result} />
+              </div>
+              <div>
+                <p className="mb-2 text-sm font-semibold">Fraud / Anomaly</p>
+                <JsonView value={detail.fraud_result} />
+              </div>
+              <div>
+                <p className="mb-2 text-sm font-semibold">Domain Advisory</p>
+                <JsonView value={detail.advisory_result} />
+              </div>
+            </div>
+          </Panel>
+
+          <Panel title="Workflow Timeline" subtitle="Replayable step-by-step execution trace.">
+            <WorkflowTimeline steps={detail.workflow_steps} />
+          </Panel>
+
+          <Panel title="Audit Trail" subtitle="System and human events with payload details.">
+            <JsonView value={detail.audit_events} />
+          </Panel>
+        </div>
+
+        <div className="space-y-6">
+          <Panel title="Final Decision" subtitle="Deterministic outcome and rationale.">
+            <DecisionCard decision={detail.decision} />
+          </Panel>
+
+          <Panel title="Why This Decision?" subtitle="Reason chain, evidence references, and rule refs.">
+            <JsonView
+              value={{
+                reasons: detail.decision?.reasons ?? [],
+                evidence_refs: detail.decision?.evidence_refs ?? [],
+                rule_refs: detail.decision?.rule_refs ?? [],
+                required_next_action: detail.decision?.required_next_action,
+              }}
+            />
+          </Panel>
+
+          <Panel title="Human Review Actions" subtitle="Approve, reject, pend, escalate, or override.">
+            <ReviewerActions claimId={claimId} onApplied={() => void load()} />
+          </Panel>
+
+          <Panel title="Communication Drafts" subtitle="Internal and external message drafts from explanation agent.">
+            <JsonView value={detail.communication_drafts} />
+          </Panel>
+        </div>
+      </div>
+    </div>
+  );
+}

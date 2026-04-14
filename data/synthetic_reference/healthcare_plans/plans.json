@@ -1,0 +1,16 @@
+[
+  {
+    "plan_id": "PLN-BASIC",
+    "covered_procedures": ["99213", "99214", "71046", "81002", "29881"],
+    "excluded_procedures": ["COS001", "LIPOX"],
+    "requires_prior_auth": ["29881"],
+    "network_required": true
+  },
+  {
+    "plan_id": "PLN-PREMIUM",
+    "covered_procedures": ["99213", "99214", "74177", "93000", "29881", "27506"],
+    "excluded_procedures": ["COS001", "LIPOX"],
+    "requires_prior_auth": ["27506"],
+    "network_required": true
+  }
+]

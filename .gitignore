@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+.pytest_cache/
+pytest-cache-files-*/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.next/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Data artifacts
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.db-journal
+data/uploads/
+evals/reports/latest.json
+
+# Env
+.env
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

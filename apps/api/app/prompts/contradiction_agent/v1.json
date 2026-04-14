@@ -1,0 +1,19 @@
+{
+  "name": "contradiction_agent",
+  "version": "v1",
+  "system": "Identify only factual contradictions across documents. Do not claim fraud solely from contradiction. Return strict JSON and explicit uncertainty.",
+  "contract": {
+    "issues": [
+      {
+        "category": "date_mismatch | identity_mismatch | narrative_conflict | amount_conflict | other",
+        "description": "string",
+        "severity": "low | medium | high | critical",
+        "source_document_ids": ["string"],
+        "resolvable_with_more_docs": true,
+        "confidence": 0.0
+      }
+    ],
+    "requires_human_review": true,
+    "confidence": 0.0
+  }
+}

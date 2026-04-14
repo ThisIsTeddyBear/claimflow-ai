@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_05_photo_reuse_escalate",
+  "domain": "auto",
+  "expected_decision": "escalate",
+  "incident_or_service_date": "2025-03-02",
+  "policy_or_member_id": "AUTO-1005",
+  "claimant_name": "Omar Singh",
+  "estimated_amount": 26500,
+  "rationale": "Synthetic scenario for escalate path coverage."
+}

@@ -1,0 +1,10 @@
+{
+  "scenario_id": "health_02_member_inactive_reject",
+  "domain": "healthcare",
+  "expected_decision": "reject",
+  "incident_or_service_date": "2025-04-07",
+  "policy_or_member_id": "HLT-2002",
+  "claimant_name": "Carlos Vega",
+  "estimated_amount": 250,
+  "rationale": "Synthetic scenario for reject path coverage."
+}

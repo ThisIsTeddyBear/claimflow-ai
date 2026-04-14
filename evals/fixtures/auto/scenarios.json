@@ -1,0 +1,239 @@
+[
+    {
+        "scenario_id":  "auto_01_straightforward_approve",
+        "domain":  "auto",
+        "subtype":  "own_damage",
+        "incident_or_service_date":  "2025-03-14",
+        "policy_or_member_id":  "AUTO-1001",
+        "claimant_name":  "Ava Carter",
+        "estimated_amount":  4500,
+        "expected_decision":  "approve",
+        "claim_payload":  {
+                              "injury_involved":  false,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-03-14\nDriver: Ava Carter\nLocation: Sacramento, CA\nVIN: 1HGCM82633A100001\nUse Type: personal\nNarrative: Rear-ended at red light"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-03-14\nDriver: Ava Carter\nNarrative: Rear-ended at red light\nInjury Description: minor neck soreness"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-1001\nTotal Estimate: $4500\nDamage Area: rear bumper and trunk panel"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_02_policy_inactive_reject",
+        "domain":  "auto",
+        "subtype":  "own_damage",
+        "incident_or_service_date":  "2025-07-10",
+        "policy_or_member_id":  "AUTO-1002",
+        "claimant_name":  "Liam Torres",
+        "estimated_amount":  3800,
+        "expected_decision":  "reject",
+        "claim_payload":  {
+                              "injury_involved":  false,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-07-10\nDriver: Liam Torres\nLocation: Reno, NV\nVIN: 2HGCM82633A100002\nUse Type: personal\nNarrative: Side collision at intersection"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-07-10\nDriver: Liam Torres\nNarrative: Another driver ran stop sign"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-2002\nTotal Estimate: $3800\nDamage Area: front fender"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_03_missing_docs_pend",
+        "domain":  "auto",
+        "subtype":  "own_damage",
+        "incident_or_service_date":  "2025-05-22",
+        "policy_or_member_id":  "AUTO-1001",
+        "claimant_name":  "Noah Carter",
+        "estimated_amount":  2400,
+        "expected_decision":  "pend",
+        "claim_payload":  {
+                              "injury_involved":  false,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-05-22\nDriver: Noah Carter\nLocation: Stockton, CA\nVIN: 1HGCM82633A100001\nUse Type: personal\nNarrative: Backed into a pole"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-05-22\nDriver: Noah Carter\nNarrative: Minor parking lot collision"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_04_narrative_mismatch_escalate",
+        "domain":  "auto",
+        "subtype":  "multi_party",
+        "incident_or_service_date":  "2025-06-12",
+        "policy_or_member_id":  "AUTO-1004",
+        "claimant_name":  "Zoe Brooks",
+        "estimated_amount":  16000,
+        "expected_decision":  "escalate",
+        "claim_payload":  {
+                              "injury_involved":  false,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-06-12\nDriver: Zoe Brooks\nLocation: Seattle, WA\nVIN: 4HGCM82633A100004\nUse Type: personal\nNarrative: Other vehicle backed into insured vehicle"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-06-12\nDriver: Zoe Brooks\nNarrative: Other vehicle backed into insured vehicle in parking lane"
+                          },
+                          {
+                              "filename":  "police_report.txt",
+                              "document_type":  "police_report",
+                              "content":  "Report Number: PR-9041\nIncident Date: 2025-06-12\nDriver: Zoe Brooks\nNarrative: Insured vehicle struck a parked vehicle while reversing"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-4004\nTotal Estimate: $16000\nDamage Area: rear quarter panel and liftgate"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_05_photo_reuse_escalate",
+        "domain":  "auto",
+        "subtype":  "own_damage",
+        "incident_or_service_date":  "2025-03-02",
+        "policy_or_member_id":  "AUTO-1005",
+        "claimant_name":  "Omar Singh",
+        "estimated_amount":  26500,
+        "expected_decision":  "escalate",
+        "claim_payload":  {
+                              "injury_involved":  true,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-03-02\nDriver: Omar Singh\nLocation: Tampa, FL\nVIN: 5HGCM82633A100005\nUse Type: personal\nNarrative: High speed side impact"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-03-02\nDriver: Omar Singh\nNarrative: Side impact at highway merge\nInjury Description: severe back pain and emergency visit"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-5005\nTotal Estimate: $26500\nDamage Area: side frame, door assemblies, wheel alignment"
+                          },
+                          {
+                              "filename":  "medical_report.txt",
+                              "document_type":  "medical_report",
+                              "content":  "Visit Date: 2025-03-03\nInjury Description: severe lumbar strain, follow-up required"
+                          },
+                          {
+                              "filename":  "photo_front.txt",
+                              "document_type":  "photo",
+                              "content":  "photo-hash-marker-abc123"
+                          },
+                          {
+                              "filename":  "photo_duplicate.txt",
+                              "document_type":  "photo",
+                              "content":  "photo-hash-marker-abc123"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_06_excluded_driver_reject",
+        "domain":  "auto",
+        "subtype":  "own_damage",
+        "incident_or_service_date":  "2025-09-01",
+        "policy_or_member_id":  "AUTO-1003",
+        "claimant_name":  "Evan Excluded",
+        "estimated_amount":  5200,
+        "expected_decision":  "reject",
+        "claim_payload":  {
+                              "injury_involved":  false,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-09-01\nDriver: Evan Excluded\nLocation: Austin, TX\nVIN: 3HGCM82633A100003\nUse Type: personal\nNarrative: Rear impact while slowing in traffic"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-09-01\nDriver: Evan Excluded\nNarrative: Rear-ended by another vehicle"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-6006\nTotal Estimate: $5200\nDamage Area: rear trunk and bumper"
+                          }
+                      ]
+    },
+    {
+        "scenario_id":  "auto_07_low_impact_high_injury_escalate",
+        "domain":  "auto",
+        "subtype":  "bodily_injury",
+        "incident_or_service_date":  "2025-10-11",
+        "policy_or_member_id":  "AUTO-1004",
+        "claimant_name":  "Zoe Brooks",
+        "estimated_amount":  1200,
+        "expected_decision":  "escalate",
+        "claim_payload":  {
+                              "injury_involved":  true,
+                              "use_type":  "personal"
+                          },
+        "documents":  [
+                          {
+                              "filename":  "claim_form.txt",
+                              "document_type":  "claim_form",
+                              "content":  "Incident Date: 2025-10-11\nDriver: Zoe Brooks\nLocation: Seattle, WA\nVIN: 4HGCM82633A100004\nUse Type: personal\nNarrative: Light bumper tap in stop-go traffic"
+                          },
+                          {
+                              "filename":  "accident_narrative.txt",
+                              "document_type":  "accident_narrative",
+                              "content":  "Incident Date: 2025-10-11\nDriver: Zoe Brooks\nNarrative: Minor visible damage but claimant reports hospitalization\nInjury Description: severe neck pain, hospital admission"
+                          },
+                          {
+                              "filename":  "repair_estimate.txt",
+                              "document_type":  "repair_estimate",
+                              "content":  "Estimate Number: EST-7007\nTotal Estimate: $1200\nDamage Area: bumper scratch and sensor calibration"
+                          },
+                          {
+                              "filename":  "medical_report.txt",
+                              "document_type":  "medical_report",
+                              "content":  "Visit Date: 2025-10-12\nInjury Description: severe cervical strain with inpatient observation"
+                          }
+                      ]
+    }
+]

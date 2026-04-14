@@ -1,0 +1,46 @@
+rules:
+  - rule_id: auto_policy_inactive_reject
+    domain: auto
+    priority: 100
+    condition:
+      all:
+        - fact: policy_active
+          equals: false
+    action:
+      decision: reject
+      reason: "Policy inactive on incident date"
+
+  - rule_id: auto_missing_docs_pend
+    domain: auto
+    priority: 90
+    condition:
+      all:
+        - fact: intake.missing_docs_count
+          gt: 0
+    action:
+      decision: pend
+      reason: "Missing required document set"
+
+  - rule_id: auto_duplicate_escalate
+    domain: auto
+    priority: 80
+    condition:
+      all:
+        - fact: is_duplicate
+          equals: true
+    action:
+      decision: escalate
+      reason: "Possible duplicate or repeated claim signature"
+      reviewer_queue: fraud_review
+
+  - rule_id: auto_high_risk_escalate
+    domain: auto
+    priority: 70
+    condition:
+      all:
+        - fact: anomaly.risk_score
+          gte: 0.8
+    action:
+      decision: escalate
+      reason: "Anomaly risk score exceeds escalation threshold"
+      reviewer_queue: fraud_review

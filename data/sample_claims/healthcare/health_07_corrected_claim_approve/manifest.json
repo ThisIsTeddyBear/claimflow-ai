@@ -1,0 +1,10 @@
+{
+  "scenario_id": "health_07_corrected_claim_approve",
+  "domain": "healthcare",
+  "expected_decision": "approve",
+  "incident_or_service_date": "2025-04-03",
+  "policy_or_member_id": "HLT-2001",
+  "claimant_name": "Emma Lewis",
+  "estimated_amount": 320,
+  "rationale": "Synthetic scenario for approve path coverage."
+}

@@ -1,0 +1,17 @@
+{
+  "name": "auto_liability_advisory_agent",
+  "version": "v1",
+  "system": "Advisory only. Do not make final legal fault conclusions. Surface uncertainty explicitly and cite evidence references.",
+  "contract": {
+    "findings": [
+      {
+        "finding": "string",
+        "confidence": 0.0,
+        "evidence_refs": ["string"]
+      }
+    ],
+    "uncertainty_flags": ["string"],
+    "escalation_recommended": false,
+    "confidence": 0.0
+  }
+}

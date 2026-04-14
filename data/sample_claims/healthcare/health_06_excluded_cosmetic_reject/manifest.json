@@ -1,0 +1,10 @@
+{
+  "scenario_id": "health_06_excluded_cosmetic_reject",
+  "domain": "healthcare",
+  "expected_decision": "reject",
+  "incident_or_service_date": "2025-06-06",
+  "policy_or_member_id": "HLT-2005",
+  "claimant_name": "Grace Kim",
+  "estimated_amount": 5400,
+  "rationale": "Synthetic scenario for reject path coverage."
+}

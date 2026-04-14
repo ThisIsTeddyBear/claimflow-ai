@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_07_low_impact_high_injury_escalate",
+  "domain": "auto",
+  "expected_decision": "escalate",
+  "incident_or_service_date": "2025-10-11",
+  "policy_or_member_id": "AUTO-1004",
+  "claimant_name": "Zoe Brooks",
+  "estimated_amount": 1200,
+  "rationale": "Synthetic scenario for escalate path coverage."
+}

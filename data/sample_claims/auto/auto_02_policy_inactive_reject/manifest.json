@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_02_policy_inactive_reject",
+  "domain": "auto",
+  "expected_decision": "reject",
+  "incident_or_service_date": "2025-07-10",
+  "policy_or_member_id": "AUTO-1002",
+  "claimant_name": "Liam Torres",
+  "estimated_amount": 3800,
+  "rationale": "Synthetic scenario for reject path coverage."
+}

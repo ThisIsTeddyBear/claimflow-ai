@@ -1,0 +1,10 @@
+{
+  "scenario_id": "health_04_duplicate_billing_escalate",
+  "domain": "healthcare",
+  "expected_decision": "escalate",
+  "incident_or_service_date": "2025-08-19",
+  "policy_or_member_id": "HLT-2003",
+  "claimant_name": "Nina Shah",
+  "estimated_amount": 16000,
+  "rationale": "Synthetic scenario for escalate path coverage."
+}

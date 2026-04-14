@@ -1,0 +1,8 @@
+[
+  {"member_id": "HLT-2001", "member_name": "Emma Lewis", "plan_id": "PLN-BASIC", "active_from": "2025-01-01", "active_to": "2026-12-31"},
+  {"member_id": "HLT-2002", "member_name": "Carlos Vega", "plan_id": "PLN-BASIC", "active_from": "2023-01-01", "active_to": "2024-06-30"},
+  {"member_id": "HLT-2003", "member_name": "Nina Shah", "plan_id": "PLN-BASIC", "active_from": "2025-01-01", "active_to": "2026-12-31"},
+  {"member_id": "HLT-2004", "member_name": "Ethan Wells", "plan_id": "PLN-PREMIUM", "active_from": "2025-01-01", "active_to": "2026-12-31"},
+  {"member_id": "HLT-2005", "member_name": "Grace Kim", "plan_id": "PLN-BASIC", "active_from": "2025-01-01", "active_to": "2026-12-31"},
+  {"member_id": "HLT-2006", "member_name": "Sara Bloom", "plan_id": "PLN-PREMIUM", "active_from": "2025-01-01", "active_to": "2026-12-31"}
+]

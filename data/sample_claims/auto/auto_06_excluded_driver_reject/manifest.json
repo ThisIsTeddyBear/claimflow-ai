@@ -1,0 +1,10 @@
+{
+  "scenario_id": "auto_06_excluded_driver_reject",
+  "domain": "auto",
+  "expected_decision": "reject",
+  "incident_or_service_date": "2025-09-01",
+  "policy_or_member_id": "AUTO-1003",
+  "claimant_name": "Evan Excluded",
+  "estimated_amount": 5200,
+  "rationale": "Synthetic scenario for reject path coverage."
+}

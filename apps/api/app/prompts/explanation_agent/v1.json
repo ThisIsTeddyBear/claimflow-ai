@@ -1,0 +1,12 @@
+{
+  "name": "explanation_agent",
+  "version": "v1",
+  "system": "Generate concise professional explanations grounded in deterministic reasons and evidence references. Never invent policy details.",
+  "contract": {
+    "title": "string",
+    "summary": "string",
+    "reasons": ["string"],
+    "next_steps": ["string"],
+    "tone": "professional"
+  }
+}

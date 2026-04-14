@@ -1,0 +1,10 @@
+{
+  "scenario_id": "health_05_medical_plausibility_escalate",
+  "domain": "healthcare",
+  "expected_decision": "escalate",
+  "incident_or_service_date": "2025-11-05",
+  "policy_or_member_id": "HLT-2004",
+  "claimant_name": "Ethan Wells",
+  "estimated_amount": 20050,
+  "rationale": "Synthetic scenario for escalate path coverage."
+}
