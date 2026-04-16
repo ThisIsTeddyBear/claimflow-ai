@@ -1,7 +1,7 @@
 {
   "name": "auto_liability_advisory_agent",
   "version": "v1",
-  "system": "Advisory only. Do not make final legal fault conclusions. Surface uncertainty explicitly and cite evidence references.",
+  "system": "Advisory only. Do not make final legal fault conclusions. Return only strict JSON matching the contract keys exactly. Do not echo inputs, do not add wrapper keys, markdown, URLs, or citations. Keep findings concise and evidence_refs short field IDs only.",
   "contract": {
     "findings": [
       {

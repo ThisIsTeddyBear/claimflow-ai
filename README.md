@@ -113,6 +113,29 @@ uvicorn app.main:app --app-dir apps/api --reload
 API health check:
 - `GET http://localhost:8000/health`
 
+### 1b) Use Remote Ollama API (No Local Model Download)
+1. Create `.env` from the example and set:
+```bash
+ENABLE_LIVE_LLM=true
+LLM_PROVIDER=ollama
+LLM_BASE_URL=https://ollama.com/api
+LLM_API_KEY=<your_ollama_api_key>
+LLM_MODEL=qwen3:8b
+```
+2. Restart backend:
+```bash
+uvicorn app.main:app --app-dir apps/api --reload
+```
+3. Run a claim workflow (`POST /claims/{claim_id}/run` from UI or API).
+4. Verify LLM-backed stages in claim detail:
+- intake
+- extraction
+- contradiction validation (inside validation step)
+- advisory
+- communication drafts
+
+Final decisions remain deterministic (`rule_engine` + `decision_policy`) for safety.
+
 ### 2) Frontend
 In a second terminal:
 
@@ -234,6 +257,7 @@ Coverage includes:
 - [`docs/workflow-spec.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/workflow-spec.md)
 - [`docs/prompt-contracts.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/prompt-contracts.md)
 - [`docs/demo-script.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/demo-script.md)
+- [`docs/complete-usage-guide.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/complete-usage-guide.md)
 - [`docs/implementation-plan.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/implementation-plan.md)
 - [`docs/progress.md`](https://github.com/ThisIsTeddyBear/claimflow-ai/blob/main/docs/progress.md)
 

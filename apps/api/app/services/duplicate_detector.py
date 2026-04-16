@@ -35,6 +35,16 @@ class DuplicateDetector:
         is_corrected = bool(claim.claim_payload.get("corrected_claim"))
 
         for candidate in candidates:
+            if (
+                candidate.created_at is not None
+                and claim.created_at is not None
+                and candidate.created_at > claim.created_at
+            ):
+                # Avoid using records that were created after the current claim.
+                # This prevents seeded/batch-loaded "future" claims from causing
+                # false duplicate escalation for earlier claims.
+                continue
+
             same_party = candidate.policy_or_member_id and candidate.policy_or_member_id == claim.policy_or_member_id
             same_date = (
                 candidate.incident_or_service_date is not None

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 from statistics import mean
 from typing import Any
 from uuid import uuid4
@@ -29,9 +30,12 @@ from app.services.duplicate_detector import DuplicateDetector
 from app.services.explanation_agent import ExplanationAgent
 from app.services.extraction_agent import ExtractionAgent
 from app.services.intake_agent import IntakeAgent
+from app.services.llm_client import LLMClient
+from app.services.prompt_registry import PromptRegistry
 from app.services.rule_engine import RuleEngine
 from app.services.threshold_policy import ThresholdPolicy
 from app.services.validation_service import ValidationService
+from app.services.contradiction_agent import ContradictionAgent
 from app.workflows.state_machine import ClaimStateMachine
 
 
@@ -46,9 +50,26 @@ class WorkflowService:
         self.workflow_repo = WorkflowRepository(db)
         self.audit_repo = AuditRepository(db)
 
-        self.intake_agent = IntakeAgent()
-        self.extraction_agent = ExtractionAgent()
-        self.validation_service = ValidationService()
+        llm_client = LLMClient(settings)
+        app_root = Path(__file__).resolve().parents[1]
+        prompt_registry = PromptRegistry(str(app_root / "prompts"))
+
+        self.intake_agent = IntakeAgent(
+            llm_client=llm_client,
+            prompt_registry=prompt_registry,
+            prompt_version=settings.prompt_version,
+        )
+        self.extraction_agent = ExtractionAgent(
+            llm_client=llm_client,
+            prompt_registry=prompt_registry,
+            prompt_version=settings.prompt_version,
+        )
+        contradiction_agent = ContradictionAgent(
+            llm_client=llm_client,
+            prompt_registry=prompt_registry,
+            prompt_version=settings.prompt_version,
+        )
+        self.validation_service = ValidationService(contradiction_agent=contradiction_agent)
         self.coverage_service = CoverageService(settings.data_dir)
 
         self.threshold_policy = ThresholdPolicy(
@@ -59,10 +80,18 @@ class WorkflowService:
             high_value_threshold_healthcare=settings.high_value_threshold_healthcare,
         )
         self.anomaly_service = AnomalyService(self.threshold_policy)
-        self.advisory_agent = AdvisoryAgent()
-        self.rule_engine = RuleEngine("./apps/api/app/rules")
+        self.advisory_agent = AdvisoryAgent(
+            llm_client=llm_client,
+            prompt_registry=prompt_registry,
+            prompt_version=settings.prompt_version,
+        )
+        self.rule_engine = RuleEngine(str(app_root / "rules"))
         self.decision_policy = DecisionPolicyEngine(self.threshold_policy)
-        self.explanation_agent = ExplanationAgent()
+        self.explanation_agent = ExplanationAgent(
+            llm_client=llm_client,
+            prompt_registry=prompt_registry,
+            prompt_version=settings.prompt_version,
+        )
         self.state_machine = ClaimStateMachine()
 
     def run_claim(self, claim_id: str, rerun_from_step: str | None = None) -> dict[str, Any]:
@@ -464,7 +493,10 @@ class WorkflowService:
 
     def _set_claim_status(self, claim: ClaimCase, status: str) -> None:
         if not self.state_machine.can_transition(claim.status, status):
-            raise ValueError(f"Invalid status transition: {claim.status} -> {status}")
+            # Recovery path: allow a fresh rerun to restart from intake when claims
+            # are left in stale in-progress states after an interrupted request.
+            if not (status == "intake_processing" and claim.status != "draft"):
+                raise ValueError(f"Invalid status transition: {claim.status} -> {status}")
         claim.status = status
         claim.updated_at = datetime.utcnow()
         self.db.add(claim)

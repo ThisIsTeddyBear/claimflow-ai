@@ -7,8 +7,8 @@ from app.services.contradiction_agent import ContradictionAgent
 
 
 class ValidationService:
-    def __init__(self) -> None:
-        self.contradiction_agent = ContradictionAgent()
+    def __init__(self, contradiction_agent: ContradictionAgent | None = None) -> None:
+        self.contradiction_agent = contradiction_agent or ContradictionAgent()
 
     def validate(self, *, domain: str, extracted_facts: list[dict], claim_payload: dict) -> list[dict]:
         issues: list[dict] = []

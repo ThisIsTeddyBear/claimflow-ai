@@ -36,6 +36,63 @@
   - multiple amounts in one document
 - Removed Python `__pycache__` artifacts under `apps/`.
 - Expanded `.gitignore` coverage for cache/runtime/editor artifacts (`pytest-cache-files-*`, `.mypy_cache`, `.ruff_cache`, `.coverage`, `*.sqlite-journal`, logs, IDE files).
+### 2026-04-16
+- Added remote Ollama API integration path for agent orchestration (no local model download required):
+  - upgraded `LLMClient` to support both OpenAI-compatible chat completions and native Ollama `/api/chat` response parsing.
+  - wired `LLMClient` + `PromptRegistry` into `WorkflowService`.
+  - enabled LLM-first with deterministic fallback/merging in:
+    - intake agent
+    - extraction agent
+    - contradiction agent
+    - advisory agent
+    - explanation agent
+  - injected LLM-capable contradiction agent through `ValidationService`.
+- Updated `.env.example` with remote Ollama configuration template.
+- Updated `README.md` with step-by-step remote Ollama setup and runtime verification points.
+- Added detailed runbook `docs/complete-usage-guide.md` with:
+  - full local setup
+  - manual intake document guidance
+  - UI and API execution flows
+  - LLM verification checklist
+  - testing/eval commands
+  - troubleshooting and interview demo sequence
+- Fixed workflow rerun resilience for interrupted claims:
+  - updated `ClaimStateMachine` to allow transitions from in-progress statuses (for example `under_domain_review`) back to `intake_processing`
+  - this prevents `Invalid status transition` errors when rerunning claims that were interrupted mid-workflow
+  - added regression test `apps/api/app/tests/test_state_machine.py`
+- Added defensive restart handling in `WorkflowService._set_claim_status`:
+  - permits restart to `intake_processing` from stale non-draft statuses even if state graph is temporarily out of sync
+  - resolves observed runtime `500` with `Invalid status transition: under_extraction -> intake_processing`
+- Added regression test `apps/api/app/tests/test_workflow_rerun_recovery.py` for rerun-from-stale-state behavior.
+- Fixed Ollama live-call reliability:
+  - identified model mismatch (`qwen3:8b` unavailable for current key) by probing `POST https://ollama.com/api/chat` (404 model not found)
+  - updated local `.env` to a working model (`ministral-3:8b`)
+  - hardened `LLMClient` parsing to handle fenced JSON and common wrapper objects (`status`, `data`, `result`, `output`, `response`) before schema validation
+  - added parsing/unit tests in `apps/api/app/tests/test_llm_client_parsing.py`
+- Sanitized `.env.example`:
+  - removed exposed API key
+  - restored commented template values with safe placeholders and model-discovery tip
+- Fixed intake over-pend behavior under live LLM:
+  - constrained intake gating to deterministic required-doc set only
+  - treats LLM-suggested extra docs as non-blocking supplemental requests
+  - added regression test `apps/api/app/tests/test_intake_agent.py`
+- Fixed duplicate detector false positives during seeded batch runs:
+  - ignores candidate claims created after the current claim to avoid future-record contamination
+  - added regression test `test_duplicate_detector_ignores_future_created_claims`
+- Hardened live Ollama structured-output reliability:
+  - upgraded `LLMClient` Ollama mode to try JSON-schema `format` first, then `json` fallback.
+  - constrained generation length with `num_predict` to reduce truncation-induced parse failures.
+  - expanded payload unwrapping to include nested `contract` and recursive dict candidates.
+  - added entity-list normalization to support extraction responses returned as `[{"field": ..., "value": ...}]`.
+- Fixed healthcare extraction LLM fallback for responses missing `document_type`:
+  - introduced `ExtractionLLMOutput` with optional `document_type`.
+  - normalized missing doc type in `ExtractionAgent` using provided/inferred type.
+  - added regression test `apps/api/app/tests/test_extraction_agent.py`.
+- Reduced false LLM-only escalations in advisory stage:
+  - added guardrail so LLM escalation requires deterministic corroboration + high-confidence finding.
+  - added regression tests in `apps/api/app/tests/test_advisory_agent.py`.
+- Tightened prompt contracts for live LLM compliance:
+  - updated system instructions in extraction/contradiction/advisory prompt files to forbid wrappers/markdown/citations and require strict contract keys.
 ## Verification Log
 - `python -m pytest apps/api/app/tests -q` -> 8 passed
 - `python scripts/seed_demo_data.py` -> seeded scenarios into DB
@@ -44,3 +101,14 @@
 - `python scripts/run_evals.py` (latest) -> 14/14 decision match, avg required-field recall 0.929
 - `npm --prefix apps/web run build` -> successful (validated with escalated permissions due sandbox spawn restrictions)
 - `pytest apps/api/app/tests -q` -> 13 passed
+- `pytest apps/api/app/tests -q` (after remote Ollama integration wiring) -> 13 passed
+- `python scripts/run_evals.py` (post-integration verification) -> 14/14 decision match, avg required-field recall 0.929
+- `pytest apps/api/app/tests -q` (after rerun-state fix) -> 14 passed
+- `pytest apps/api/app/tests -q` (after workflow recovery guard) -> 15 passed
+- `pytest apps/api/app/tests -q` (after Ollama parser/model fixes) -> 19 passed
+- Live escalated probe via `LLMClient.generate_structured` with Ollama (`ministral-3:8b`) -> successful structured response
+- `pytest apps/api/app/tests -q` (after intake + duplicate detector hardening) -> 21 passed
+- Full live-LMM end-to-end sweep on all 14 seeded scenarios (isolated temp DB/uploads) -> 14/14 expected decisions matched
+- `pytest apps/api/app/tests -q` (after live LLM robustness fixes) -> 26 passed
+- Live stage-level Ollama probe (intake/extraction/contradiction/advisory/explanation) -> all stage probes returning non-`None` structured outputs
+- Full live-LMM end-to-end sweep after guardrails and schema-format updates -> 14/14 expected decisions matched

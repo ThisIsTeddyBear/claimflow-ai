@@ -1,15 +1,60 @@
 from __future__ import annotations
 
+import json
 import re
 
+from pydantic import BaseModel, Field
+
 from app.schemas.agent_outputs import ExtractedEntity, ExtractionAgentOutput
+from app.services.llm_client import LLMClient
+from app.services.prompt_registry import PromptRegistry
 from app.services.utils import extract_amount, extract_first_date, parse_key_value_lines
+
+
+class ExtractionLLMOutput(BaseModel):
+    document_type: str | None = None
+    entities: dict[str, ExtractedEntity] = Field(default_factory=dict)
+    ambiguities: list[str] = Field(default_factory=list)
+    doc_summary: str = ""
+    confidence: float = 0.0
 
 
 class ExtractionAgent:
     CODE_SPLIT = re.compile(r"[,;\s]+")
 
+    def __init__(
+        self,
+        llm_client: LLMClient | None = None,
+        prompt_registry: PromptRegistry | None = None,
+        prompt_version: str = "v1",
+    ) -> None:
+        self.llm_client = llm_client
+        self.prompt_registry = prompt_registry
+        self.prompt_version = prompt_version
+
     def run(self, *, domain: str, filename: str, document_type: str | None, text: str) -> ExtractionAgentOutput:
+        deterministic = self._run_deterministic(domain=domain, filename=filename, document_type=document_type, text=text)
+        llm_output = self._run_llm(domain=domain, filename=filename, document_type=document_type, text=text)
+        if llm_output is None:
+            return deterministic
+
+        merged_entities = {**deterministic.entities}
+        for key, entity in llm_output.entities.items():
+            existing = merged_entities.get(key)
+            if existing is None or entity.confidence >= existing.confidence:
+                merged_entities[key] = entity
+
+        ambiguities = deterministic.ambiguities + [item for item in llm_output.ambiguities if item not in deterministic.ambiguities]
+        confidence = round(min(0.99, max(deterministic.confidence, llm_output.confidence)), 3)
+        return ExtractionAgentOutput(
+            document_type=deterministic.document_type or llm_output.document_type,
+            entities=merged_entities,
+            ambiguities=ambiguities,
+            doc_summary=llm_output.doc_summary or deterministic.doc_summary,
+            confidence=max(0.0, min(1.0, confidence)),
+        )
+
+    def _run_deterministic(self, *, domain: str, filename: str, document_type: str | None, text: str) -> ExtractionAgentOutput:
         normalized_doc_type = (document_type or self._infer_doc_type(filename)).strip().lower().replace(" ", "_")
         entities = self._extract_auto(text, normalized_doc_type) if domain == "auto" else self._extract_healthcare(text, normalized_doc_type)
         confidence = round(min(0.98, 0.55 + 0.06 * len(entities)), 3)
@@ -22,6 +67,41 @@ class ExtractionAgent:
             entities=entities,
             ambiguities=ambiguities,
             doc_summary=self._summarize(text),
+            confidence=confidence,
+        )
+
+    def _run_llm(self, *, domain: str, filename: str, document_type: str | None, text: str) -> ExtractionAgentOutput | None:
+        if not self.llm_client or not self.prompt_registry:
+            return None
+
+        try:
+            prompt = self.prompt_registry.load("document_extraction_agent", self.prompt_version)
+        except FileNotFoundError:
+            return None
+
+        user_payload = {
+            "domain": domain,
+            "filename": filename,
+            "document_type": document_type,
+            "text": text,
+            "contract": prompt.get("contract", {}),
+        }
+        user_prompt = (
+            "Extract claim entities from this document. Return only JSON matching the contract.\n"
+            f"{json.dumps(user_payload, ensure_ascii=True)}"
+        )
+        raw_output = self.llm_client.generate_structured(system=prompt["system"], user=user_prompt, schema=ExtractionLLMOutput)
+        if raw_output is None:
+            return None
+
+        normalized_doc_type = (raw_output.document_type or document_type or self._infer_doc_type(filename)).strip().lower().replace(" ", "_")
+        summary = raw_output.doc_summary or self._summarize(text)
+        confidence = max(0.0, min(1.0, float(raw_output.confidence)))
+        return ExtractionAgentOutput(
+            document_type=normalized_doc_type,
+            entities=raw_output.entities,
+            ambiguities=raw_output.ambiguities,
+            doc_summary=summary,
             confidence=confidence,
         )
 

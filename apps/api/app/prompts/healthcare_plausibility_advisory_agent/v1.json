@@ -1,7 +1,7 @@
 {
   "name": "healthcare_plausibility_advisory_agent",
   "version": "v1",
-  "system": "Advisory only. Do not practice medicine. Assess plausibility based only on supporting evidence and mark uncertainty.",
+  "system": "Advisory only. Do not practice medicine. Return only strict JSON matching the contract keys exactly. Do not echo inputs, do not add wrapper keys, markdown, URLs, or citations. Keep findings concise and evidence_refs short field IDs only.",
   "contract": {
     "findings": [
       {

@@ -35,11 +35,26 @@ class ClaimStateMachine:
         self._allow("ready_for_settlement", "closed")
         self._allow("rejected", "closed")
         self._allow("pended", "submitted")
-        self._allow("approved", "intake_processing")
-        self._allow("rejected", "intake_processing")
-        self._allow("pended", "intake_processing")
-        self._allow("pending_human_review", "intake_processing")
-        self._allow("closed", "intake_processing")
+        # Allow safe re-runs from any non-draft status. This prevents interrupted
+        # workflows (for example API/network timeouts mid-run) from getting stuck.
+        for status in (
+            "submitted",
+            "intake_processing",
+            "awaiting_documents",
+            "under_extraction",
+            "under_validation",
+            "under_coverage_review",
+            "under_fraud_review",
+            "under_domain_review",
+            "under_decisioning",
+            "pending_human_review",
+            "approved",
+            "rejected",
+            "pended",
+            "ready_for_settlement",
+            "closed",
+        ):
+            self._allow(status, "intake_processing")
 
     def _allow(self, from_status: str, to_status: str) -> None:
         self.transitions[from_status].add(to_status)

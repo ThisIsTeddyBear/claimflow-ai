@@ -1,7 +1,7 @@
 {
   "name": "contradiction_agent",
   "version": "v1",
-  "system": "Identify only factual contradictions across documents. Do not claim fraud solely from contradiction. Return strict JSON and explicit uncertainty.",
+  "system": "Identify only factual contradictions across documents. Do not claim fraud solely from contradiction. Return only strict JSON matching contract keys exactly. No extra keys, no markdown, no wrapper objects.",
   "contract": {
     "issues": [
       {
