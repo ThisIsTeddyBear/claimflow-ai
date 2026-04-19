@@ -6,13 +6,19 @@ import Link from "next/link";
 import { Panel } from "@/components/panel";
 import { RiskBadge, StatusBadge } from "@/components/badges";
 import { listClaims, seedDemoData } from "@/lib/api";
-import { ClaimSummary } from "@/types/claims";
+import {
+  ClaimSummary,
+  ClaimStatus,
+  CLAIM_DECISION_FILTER_OPTIONS,
+  CLAIM_STATUS_FILTER_OPTIONS,
+  DecisionType,
+} from "@/types/claims";
 
 export default function ClaimsPage() {
   const [claims, setClaims] = useState<ClaimSummary[]>([]);
   const [domain, setDomain] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [decision, setDecision] = useState<string>("");
+  const [status, setStatus] = useState<ClaimStatus | "">("");
+  const [decision, setDecision] = useState<DecisionType | "">("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [seedMessage, setSeedMessage] = useState<string | null>(null);
@@ -72,8 +78,20 @@ export default function ClaimsPage() {
             <option value="auto">Auto</option>
             <option value="healthcare">Healthcare</option>
           </select>
-          <input className="rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="status filter" value={status} onChange={(event) => setStatus(event.target.value)} />
-          <input className="rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="decision filter" value={decision} onChange={(event) => setDecision(event.target.value)} />
+          <select className="rounded-lg border border-slate-300 px-3 py-2 text-sm" value={status} onChange={(event) => setStatus(event.target.value as ClaimStatus | "")}>
+            {CLAIM_STATUS_FILTER_OPTIONS.map((option) => (
+              <option key={option.label} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <select className="rounded-lg border border-slate-300 px-3 py-2 text-sm" value={decision} onChange={(event) => setDecision(event.target.value as DecisionType | "")}>
+            {CLAIM_DECISION_FILTER_OPTIONS.map((option) => (
+              <option key={option.label} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
           <button className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white" onClick={() => void loadClaims()}>
             Refresh
           </button>

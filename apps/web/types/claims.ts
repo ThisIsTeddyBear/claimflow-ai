@@ -1,5 +1,50 @@
 export type ClaimDomain = "auto" | "healthcare";
 export type DecisionType = "approve" | "reject" | "pend" | "escalate";
+export type ClaimStatus =
+  | "draft"
+  | "submitted"
+  | "intake_processing"
+  | "awaiting_documents"
+  | "under_extraction"
+  | "under_validation"
+  | "under_coverage_review"
+  | "under_fraud_review"
+  | "under_domain_review"
+  | "under_decisioning"
+  | "pending_human_review"
+  | "approved"
+  | "rejected"
+  | "pended"
+  | "ready_for_settlement"
+  | "closed";
+
+export const CLAIM_STATUS_FILTER_OPTIONS: Array<{ value: ClaimStatus | ""; label: string }> = [
+  { value: "", label: "All statuses" },
+  { value: "draft", label: "Draft" },
+  { value: "submitted", label: "Submitted" },
+  { value: "intake_processing", label: "Intake Processing" },
+  { value: "awaiting_documents", label: "Awaiting Documents" },
+  { value: "under_extraction", label: "Under Extraction" },
+  { value: "under_validation", label: "Under Validation" },
+  { value: "under_coverage_review", label: "Under Coverage Review" },
+  { value: "under_fraud_review", label: "Under Fraud Review" },
+  { value: "under_domain_review", label: "Under Domain Review" },
+  { value: "under_decisioning", label: "Under Decisioning" },
+  { value: "pending_human_review", label: "Pending Human Review" },
+  { value: "approved", label: "Approved" },
+  { value: "rejected", label: "Rejected" },
+  { value: "pended", label: "Pended" },
+  { value: "ready_for_settlement", label: "Ready For Settlement" },
+  { value: "closed", label: "Closed" },
+];
+
+export const CLAIM_DECISION_FILTER_OPTIONS: Array<{ value: DecisionType | ""; label: string }> = [
+  { value: "", label: "All decisions" },
+  { value: "approve", label: "Approve" },
+  { value: "reject", label: "Reject" },
+  { value: "pend", label: "Pend" },
+  { value: "escalate", label: "Escalate" },
+];
 
 export type ClaimSummary = {
   id: string;
