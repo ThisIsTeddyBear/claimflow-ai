@@ -4,9 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { DecisionCard } from "@/components/decision-card";
+import { ExtractedFactsSummary } from "@/components/extracted-facts-summary";
 import { JsonView } from "@/components/json-view";
 import { Panel } from "@/components/panel";
 import { ReviewerActions } from "@/components/reviewer-actions";
+import { ReviewInsights } from "@/components/review-insights";
 import { RiskBadge, StatusBadge } from "@/components/badges";
 import { WorkflowTimeline } from "@/components/workflow-timeline";
 import { getClaimDetail, rerunWorkflowStep, runWorkflow } from "@/lib/api";
@@ -127,7 +129,7 @@ export default function ClaimDetailPage() {
           </Panel>
 
           <Panel title="Extracted Facts" subtitle="Structured entity output from extraction agent.">
-            <JsonView value={detail.extracted_facts} />
+            <ExtractedFactsSummary domain={detail.claim.domain} facts={detail.extracted_facts} documents={detail.documents} />
           </Panel>
 
           <Panel title="Validation Issues" subtitle="Contradictions and deterministic validation findings.">
@@ -149,20 +151,11 @@ export default function ClaimDetailPage() {
           </Panel>
 
           <Panel title="Coverage, Anomaly, Advisory" subtitle="Deterministic coverage checks and advisory findings.">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div>
-                <p className="mb-2 text-sm font-semibold">Coverage Result</p>
-                <JsonView value={detail.coverage_result} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-semibold">Fraud / Anomaly</p>
-                <JsonView value={detail.fraud_result} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-semibold">Domain Advisory</p>
-                <JsonView value={detail.advisory_result} />
-              </div>
-            </div>
+            <ReviewInsights
+              coverageResult={detail.coverage_result}
+              fraudResult={detail.fraud_result}
+              advisoryResult={detail.advisory_result}
+            />
           </Panel>
 
           <Panel title="Workflow Timeline" subtitle="Replayable step-by-step execution trace.">
