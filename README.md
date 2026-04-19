@@ -26,7 +26,7 @@ Pure LLM adjudication is unsafe for claims operations. ClaimFlow AI applies this
 - deterministic rules + coverage/benefit evaluators
 - structured agent outputs and prompt contracts
 - auditable decision traces and human override logs
-- seeded synthetic scenarios (7 auto + 7 healthcare)
+- seeded synthetic scenarios (7 auto + 8 healthcare)
 - evaluation harness for decision quality checks
 - polished reviewer UI (queue, detail, timeline, audit, override)
 
@@ -219,7 +219,7 @@ See: [`docs/prompt-contracts.md`](https://github.com/ThisIsTeddyBear/claimflow-a
 
 ## Seeded Scenario Coverage
 - Auto: straightforward approve, inactive policy reject, missing docs pend, narrative mismatch escalate, photo reuse/high value escalate, excluded driver reject, low-impact high-injury escalate
-- Healthcare: routine covered approve, inactive member reject, missing prior auth pend, duplicate billing escalate, plausibility/high-cost escalate, excluded cosmetic reject, corrected claim approve
+- Healthcare: routine covered approve, inactive member reject, missing prior auth pend, prior auth present approve, duplicate billing escalate, plausibility/high-cost escalate, excluded cosmetic reject, corrected claim approve
 
 Source: `apps/api/app/seed/scenarios.json`
 

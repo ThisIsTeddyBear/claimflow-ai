@@ -1,0 +1,4 @@
+Diagnosis Codes: M23.21
+Procedure Codes: 29881
+Units: 1
+Prior Auth Number: PA-990321

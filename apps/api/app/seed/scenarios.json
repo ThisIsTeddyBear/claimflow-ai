@@ -410,5 +410,33 @@
         "content": "Diagnosis Codes: Z00.00\nProcedure Codes: 99213\nUnits: 1"
       }
     ]
+  },
+  {
+    "scenario_id": "health_08_prior_auth_present_approve",
+    "domain": "healthcare",
+    "subtype": "outpatient",
+    "incident_or_service_date": "2025-09-10",
+    "policy_or_member_id": "HLT-2003",
+    "claimant_name": "Nina Shah",
+    "estimated_amount": 9800,
+    "expected_decision": "approve",
+    "claim_payload": {"corrected_claim": false},
+    "documents": [
+      {
+        "filename": "claim_form.txt",
+        "document_type": "claim_form",
+        "content": "Member ID: HLT-2003\nProvider ID: PRV-302\nDate of Service: 2025-09-10"
+      },
+      {
+        "filename": "billing_statement.txt",
+        "document_type": "billing_statement",
+        "content": "Member ID: HLT-2003\nProvider ID: PRV-302\nBilled Amount: $9800\nUnits: 1"
+      },
+      {
+        "filename": "coding_summary.txt",
+        "document_type": "coding_summary",
+        "content": "Diagnosis Codes: M23.21\nProcedure Codes: 29881\nUnits: 1\nPrior Auth Number: PA-990321"
+      }
+    ]
   }
 ]

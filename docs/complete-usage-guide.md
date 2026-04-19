@@ -65,7 +65,7 @@ python scripts/seed_demo_data.py
 ```
 
 Expected:
-- 7 auto and 7 healthcare synthetic claims are loaded.
+- 7 auto and 8 healthcare synthetic claims are loaded.
 
 ## 6) Run the Full Workflow (UI Path)
 1. Open any claim from queue.

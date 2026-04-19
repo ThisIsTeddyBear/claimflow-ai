@@ -19,7 +19,7 @@
 - Added milestone-driven execution plan in `docs/implementation-plan.md`.
 - Built FastAPI backend with SQLAlchemy models, API routes, orchestration engine, rules engine, coverage evaluators, anomaly/duplicate detection, decision policy, and review overrides.
 - Implemented versioned prompt contracts under `apps/api/app/prompts/`.
-- Added synthetic reference data and 14 seeded domain scenarios (7 auto + 7 healthcare).
+- Added synthetic reference data and 15 seeded domain scenarios (7 auto + 8 healthcare).
 - Added evaluation harness (`/evals/run`, scripts, reports) and baseline tests.
 - Built Next.js reviewer dashboard with claims queue, new claim intake, claim detail workspace, workflow timeline, audit trail, decision panel, and eval dashboard.
 - Authored architecture, workflow, prompt, and demo documentation.

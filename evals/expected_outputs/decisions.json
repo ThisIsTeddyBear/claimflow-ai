@@ -12,5 +12,6 @@
   "health_04_duplicate_billing_escalate": "escalate",
   "health_05_medical_plausibility_escalate": "escalate",
   "health_06_excluded_cosmetic_reject": "reject",
-  "health_07_corrected_claim_approve": "approve"
+  "health_07_corrected_claim_approve": "approve",
+  "health_08_prior_auth_present_approve": "approve"
 }
