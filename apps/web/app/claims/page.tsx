@@ -138,7 +138,15 @@ export default function ClaimsPage() {
               ) : (
                 claims.map((claim) => (
                   <tr key={claim.id} className="rounded-xl bg-white">
-                    <td className="rounded-l-xl px-3 py-3 font-semibold">{claim.claim_number}</td>
+                    <td className="rounded-l-xl px-3 py-3">
+                      <Link
+                        href={`/claims/${claim.id}`}
+                        className="inline-flex rounded-md font-semibold text-ink underline-offset-4 transition hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      >
+                        {claim.claim_number}
+                      </Link>
+                      {claim.claimant_name ? <p className="mt-1 text-xs font-normal text-muted">{claim.claimant_name}</p> : null}
+                    </td>
                     <td className="px-3 py-3 capitalize">{claim.domain}</td>
                     <td className="px-3 py-3"><StatusBadge value={claim.status} /></td>
                     <td className="px-3 py-3"><StatusBadge value={claim.latest_decision ?? "none"} /></td>

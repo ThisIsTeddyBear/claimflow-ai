@@ -83,21 +83,37 @@ export default function ClaimDetailPage() {
   return (
     <div className="space-y-6">
       <Panel title="Claim Header" subtitle="Intake snapshot and current workflow state.">
-        <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-2xl font-semibold">{detail.claim.claim_number}</h2>
-          <StatusBadge value={detail.claim.status} />
-          <StatusBadge value={detail.decision?.decision ?? "no_decision"} />
-          <RiskBadge score={detail.fraud_result?.risk_score} />
+        <div className="space-y-5">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-semibold text-ink">{detail.claim.claim_number}</h2>
+            {detail.claim.claimant_name ? <p className="text-sm text-muted">{detail.claim.claimant_name}</p> : null}
+          </div>
+
+          <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2 xl:grid-cols-3">
+            <HeaderDetail label="Domain" value={detail.claim.domain} />
+            <HeaderDetail label="Subtype" value={detail.claim.subtype ?? "-"} />
+            <HeaderDetail label="Member/Policy" value={detail.claim.policy_or_member_id ?? "-"} />
+            <HeaderDetail label="Claimant" value={detail.claim.claimant_name ?? "-"} />
+            <HeaderDetail label="Date" value={detail.claim.incident_or_service_date ?? "-"} />
+            <HeaderDetail label="Amount" value={detail.claim.estimated_amount != null ? `$${detail.claim.estimated_amount}` : "-"} />
+          </dl>
+
+          <section className="space-y-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted">Workflow Summary</p>
+            <dl className="grid gap-3 md:grid-cols-3">
+              <WorkflowMetric label="Status">
+                <StatusBadge value={detail.claim.status || "Unknown"} />
+              </WorkflowMetric>
+              <WorkflowMetric label="Decision">
+                <StatusBadge value={detail.decision?.decision ?? "None"} />
+              </WorkflowMetric>
+              <WorkflowMetric label="Risk">
+                <RiskBadge score={detail.fraud_result?.risk_score} />
+              </WorkflowMetric>
+            </dl>
+          </section>
         </div>
-        <div className="mt-4 grid gap-2 text-sm text-muted md:grid-cols-3">
-          <p>Domain: {detail.claim.domain}</p>
-          <p>Subtype: {detail.claim.subtype ?? "-"}</p>
-          <p>Member/Policy: {detail.claim.policy_or_member_id ?? "-"}</p>
-          <p>Claimant: {detail.claim.claimant_name ?? "-"}</p>
-          <p>Date: {detail.claim.incident_or_service_date ?? "-"}</p>
-          <p>Amount: {detail.claim.estimated_amount != null ? `$${detail.claim.estimated_amount}` : "-"}</p>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-200 pt-4">
           <button className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white disabled:opacity-50" disabled={running} onClick={() => void handleRunWorkflow()}>
             {running ? "Running..." : "Run Workflow"}
           </button>
@@ -192,6 +208,24 @@ export default function ClaimDetailPage() {
           </Panel>
         </div>
       </div>
+    </div>
+  );
+}
+
+function WorkflowMetric({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3">
+      <dt className="text-xs font-medium uppercase tracking-wide text-muted">{label}</dt>
+      <dd className="mt-2 flex min-h-8 items-center">{children}</dd>
+    </div>
+  );
+}
+
+function HeaderDetail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="space-y-1">
+      <dt className="text-xs font-medium uppercase tracking-wide text-muted">{label}</dt>
+      <dd className="text-sm text-ink">{value}</dd>
     </div>
   );
 }
