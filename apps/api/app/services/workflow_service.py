@@ -407,6 +407,7 @@ class WorkflowService:
     def _run_communication(self, claim: ClaimCase, decision: dict[str, Any]) -> dict[str, Any]:
         audiences = ["internal", "claimant" if claim.domain == "auto" else "provider", "adjuster"]
         created: list[dict] = []
+        claim_context = self._build_communication_context(claim, decision)
 
         next_steps = [decision.get("required_next_action") or "No additional action"]
         for audience in audiences:
@@ -415,6 +416,7 @@ class WorkflowService:
                 decision=decision["decision"],
                 reasons=decision.get("reasons", []),
                 next_steps=next_steps,
+                claim_context=claim_context,
             )
             record = CommunicationDraft(
                 claim_id=claim.id,
@@ -525,6 +527,35 @@ class WorkflowService:
                 fact_map[row["key"]] = row["value"]
         return fact_map
 
+    def _build_communication_context(self, claim: ClaimCase, decision: dict[str, Any]) -> dict[str, Any]:
+        fact_map = self._build_fact_map(claim.id)
+        docs = self.document_repo.list_for_claim(claim.id)
+        return {
+            "claim_number": claim.claim_number,
+            "domain": claim.domain,
+            "subtype": claim.subtype,
+            "claimant_name": claim.claimant_name,
+            "policy_or_member_id": claim.policy_or_member_id,
+            "incident_or_service_date": claim.incident_or_service_date.isoformat() if claim.incident_or_service_date else None,
+            "estimated_amount": claim.estimated_amount,
+            "member_id": fact_map.get("member_id") or claim.policy_or_member_id,
+            "provider_id": fact_map.get("provider_id"),
+            "driver_name": fact_map.get("driver_name"),
+            "date_of_service": fact_map.get("date_of_service"),
+            "incident_date": fact_map.get("incident_date"),
+            "accident_location": fact_map.get("accident_location"),
+            "repair_estimate_amount": fact_map.get("repair_estimate_amount"),
+            "billed_amount": fact_map.get("billed_amount"),
+            "units": fact_map.get("units"),
+            "diagnosis_codes": self._normalize_fact_list(fact_map.get("diagnosis_codes")),
+            "procedure_codes": self._normalize_fact_list(fact_map.get("procedure_codes")),
+            "corrected_claim": fact_map.get("corrected_claim", claim.claim_payload.get("corrected_claim")),
+            "document_types": list(dict.fromkeys(doc.document_type or doc.filename for doc in docs)),
+            "decision_reasons": decision.get("reasons", []),
+            "required_next_action": decision.get("required_next_action"),
+            "reviewer_queue": decision.get("reviewer_queue"),
+        }
+
     @staticmethod
     def _average_document_confidence(extraction_output: dict[str, Any]) -> float:
         docs = extraction_output.get("documents", [])
@@ -532,6 +563,15 @@ class WorkflowService:
             return 0.5
         confidences = [doc.get("confidence", 0.5) for doc in docs]
         return round(mean(confidences), 3)
+
+    @staticmethod
+    def _normalize_fact_list(value: Any) -> list[str]:
+        if isinstance(value, list):
+            return [str(item) for item in value if str(item).strip()]
+        if value is None:
+            return []
+        text = str(value).strip()
+        return [text] if text else []
 
     def _clear_non_decision_artifacts(self, claim_id: str) -> None:
         self.db.execute(delete(ExtractedFact).where(ExtractedFact.claim_id == claim_id))

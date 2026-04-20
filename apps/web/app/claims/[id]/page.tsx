@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { DecisionCard } from "@/components/decision-card";
+import { CommunicationDraftsList } from "@/components/communication-drafts-list";
 import { ExtractedFactsSummary } from "@/components/extracted-facts-summary";
 import { JsonView } from "@/components/json-view";
 import { Panel } from "@/components/panel";
@@ -204,7 +205,7 @@ export default function ClaimDetailPage() {
           </Panel>
 
           <Panel title="Communication Drafts" subtitle="Internal and external message drafts from explanation agent.">
-            <JsonView value={detail.communication_drafts} />
+            <CommunicationDraftsList drafts={detail.communication_drafts} />
           </Panel>
         </div>
       </div>
