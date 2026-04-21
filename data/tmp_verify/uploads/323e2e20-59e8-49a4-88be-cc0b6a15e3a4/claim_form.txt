@@ -1,4 +1,0 @@
-Member ID: HLT-2001
-Provider ID: PRV-301
-Date of Service: 2025-04-03
-Corrected Claim: true

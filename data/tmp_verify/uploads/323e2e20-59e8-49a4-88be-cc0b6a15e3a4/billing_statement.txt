@@ -1,4 +1,0 @@
-Member ID: HLT-2001
-Provider ID: PRV-301
-Billed Amount: $320
-Units: 1

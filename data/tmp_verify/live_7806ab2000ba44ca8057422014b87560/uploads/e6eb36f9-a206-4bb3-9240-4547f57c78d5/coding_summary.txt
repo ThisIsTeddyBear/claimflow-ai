@@ -1,3 +1,0 @@
-Diagnosis Codes: Z00.00
-Procedure Codes: 99213
-Units: 1

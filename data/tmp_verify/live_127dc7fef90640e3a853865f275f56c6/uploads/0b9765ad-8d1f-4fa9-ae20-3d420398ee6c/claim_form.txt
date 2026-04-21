@@ -1,6 +1,0 @@
-Incident Date: 2025-10-11
-Driver: Zoe Brooks
-Location: Seattle, WA
-VIN: 4HGCM82633A100004
-Use Type: personal
-Narrative: Light bumper tap in stop-go traffic

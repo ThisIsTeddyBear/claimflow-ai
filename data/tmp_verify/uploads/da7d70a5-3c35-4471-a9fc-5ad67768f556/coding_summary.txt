@@ -1,3 +1,0 @@
-Diagnosis Codes: R10.13
-Procedure Codes: 74177
-Units: 1

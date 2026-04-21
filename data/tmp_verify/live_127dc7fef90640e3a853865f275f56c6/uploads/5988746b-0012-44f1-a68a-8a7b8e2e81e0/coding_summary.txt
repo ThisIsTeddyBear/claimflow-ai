@@ -1,3 +1,0 @@
-Diagnosis Codes: R10.9
-Procedure Codes: 99213
-Units: 1

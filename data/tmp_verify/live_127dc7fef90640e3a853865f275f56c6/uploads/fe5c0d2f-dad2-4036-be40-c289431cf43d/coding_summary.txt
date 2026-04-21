@@ -1,3 +1,0 @@
-Diagnosis Codes: M23.21
-Procedure Codes: 29881
-Units: 1

@@ -1,4 +1,0 @@
-Member ID: HLT-2004
-Provider ID: PRV-302
-Billed Amount: $20050
-Units: 1

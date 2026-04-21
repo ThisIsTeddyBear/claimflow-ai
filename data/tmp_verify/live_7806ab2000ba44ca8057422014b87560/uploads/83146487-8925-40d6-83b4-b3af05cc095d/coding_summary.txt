@@ -1,3 +1,0 @@
-Diagnosis Codes: Z41.1
-Procedure Codes: COS001
-Units: 1

@@ -1,6 +1,0 @@
-Incident Date: 2025-06-12
-Driver: Zoe Brooks
-Location: Seattle, WA
-VIN: 4HGCM82633A100004
-Use Type: personal
-Narrative: Other vehicle backed into insured vehicle
